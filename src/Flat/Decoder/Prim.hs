@@ -388,6 +388,13 @@ getChunksInfo = Get $ \endPtr s -> do
 
    when (usedBits s /=0) $ badEncoding endPtr s "usedBits /= 0"
    (currPtr',ns) <- getChunks (currPtr s) id
+   let 
+     isCanonical = go True
+       where
+         go acc [] = acc
+         go acc [_] = acc
+         go acc (l:ls) = go (l == 255 && acc) ls
+   unless (isCanonical ns) $ badEncoding endPtr s $ "non-canonical chunk lengths: " ++ show ns
    return $ GetResult (s {currPtr=currPtr'}) (currPtr s `plusPtr` 1,ns)
 
 -- Fix for ghcjs bug:  https://github.com/ghcjs/ghcjs/issues/706
