@@ -129,12 +129,6 @@ instance Flat a => Flat (Semigroup.Last a) where
     encode (Semigroup.Last a) = encode a
     size (Semigroup.Last a) = size a
     decode = Semigroup.Last <$> decode
-
--- | @since 0.4.4
-instance Flat a => Flat (Semigroup.Option a) where
-    encode (Semigroup.Option a) = encode a
-    size (Semigroup.Option a) = size a
-    decode = Semigroup.Option <$> decode
 #endif
 
 {- |
