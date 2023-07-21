@@ -244,14 +244,8 @@ dUnsigned_ shl n = do
 dUTF16 :: Get T.Text
 dUTF16 = do
   _ <- dFiller
-#if MIN_VERSION_text(2,0,0)
   -- Checked decoding
   T.decodeUtf16LE <$> dByteString_
-#else
-  -- Unchecked decoding
-  (ByteArray array, lengthInBytes) <- dByteArray_
-  return (T.Text (TA.Array array) 0 (lengthInBytes `div` 2))
-#endif
 #endif
 dUTF8 :: Get T.Text
 dUTF8 = do
